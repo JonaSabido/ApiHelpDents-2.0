@@ -1,3 +1,5 @@
+using System.Threading;
+using System.Reflection.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +59,9 @@ namespace ApiHelpDents.Infraestructure.Repositories
 
             entity.Nombre = admin.Nombre;
             entity.Apellido = admin.Apellido;
+            entity.Correo = admin.Correo;
             entity.Contraseña = admin.Contraseña;
+            
 
             _context.Update(entity);
 

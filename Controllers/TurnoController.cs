@@ -41,6 +41,18 @@ namespace ApiHelpDents.Controller{
             var response = _mapper.Map<IEnumerable<Turno>, IEnumerable<TurnoResponse>>(query);
             return Ok(response);
         }
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> GetById(int id){
+
+            var esp = await _repository.GetById(id);
+            var respuesta = _mapper.Map<Turno,TurnoResponse>(esp);
+            if(respuesta == null){
+                return NoContent();
+            }
+
+            return Ok(respuesta);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] TurnoCreateRequest turno){

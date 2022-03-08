@@ -30,7 +30,7 @@ namespace ApiHelpDents.Infraestructure.Repositories
         public async Task<IQueryable<AsesorHasTurno>> GetAll()
         {
             
-            var query = await _context.AsesorHasTurnos.AsQueryable<AsesorHasTurno>().ToListAsync();
+            var query = await _context.AsesorHasTurnos.AsQueryable<AsesorHasTurno>().OrderBy(x => x.AsesorIdAsesor).ToListAsync();
             return query.AsQueryable();
         }
 

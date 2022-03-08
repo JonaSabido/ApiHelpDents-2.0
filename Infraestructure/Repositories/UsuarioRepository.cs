@@ -57,6 +57,7 @@ namespace ApiHelpDents.Infraestructure.Repositories
 
             entity.Nombre = user.Nombre;
             entity.Apellido = user.Apellido;
+            entity.Correo = user.Correo;
             entity.Contraseña = user.Contraseña;
 
             _context.Update(entity);

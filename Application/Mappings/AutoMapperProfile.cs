@@ -126,6 +126,7 @@ namespace ApiHelpDents.Application.Mappings
             CreateMap<AdminUpdateRequest, Administrador>()
             .ForPath(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombres))
             .ForPath(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellidos))
+            .ForPath(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
             .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
 
             CreateMap<AsesorUpdateRequest, Asesor>()
@@ -141,6 +142,7 @@ namespace ApiHelpDents.Application.Mappings
             CreateMap<UsuarioUpdateRequest, Usuario>()
             .ForPath(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombres))
             .ForPath(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellidos))
+            .ForPath(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
             .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
             
 
