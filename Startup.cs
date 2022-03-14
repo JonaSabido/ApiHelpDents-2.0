@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using ApiHelpDents.Infraestructure.Repositories;
 using ApiHelpDents.Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using System.Text.Json.Serialization;
 
 namespace ApiHelpDents
 {
@@ -53,6 +54,7 @@ namespace ApiHelpDents
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

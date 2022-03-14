@@ -13,6 +13,7 @@ namespace ApiHelpDents.Domain.Interfaces
         Task<IQueryable<AsesorHasEspecialidad>> GetAll();
         
         Task<AsesorHasEspecialidad> GetById (int id);
+        Task<IQueryable<AsesorHasEspecialidad>> GetByEspecialidadId(int? id);
         Task<int> Create(AsesorHasEspecialidad ahe);
         Task<bool> Delete(int id);
         bool Exist(Expression<Func<AsesorHasEspecialidad, bool>> expression); 

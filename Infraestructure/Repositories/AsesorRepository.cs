@@ -1,3 +1,4 @@
+using System.Diagnostics.Tracing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,16 @@ namespace ApiHelpDents.Infraestructure.Repositories
     {
 
         private readonly HelpDents_Db_FinalContext _context;
+        private readonly IAsesorHasEspecialidadRepository _repositoryEsp;
+        private readonly IAsesorHasTurnoRepository _repositoryTurno;
+        private readonly IUsuarioRepository _repositoryUser;
 
-        public AsesorRepository(HelpDents_Db_FinalContext context)
+        public AsesorRepository(HelpDents_Db_FinalContext context, IAsesorHasEspecialidadRepository repositoryEsp, IAsesorHasTurnoRepository repositoryTurno, IUsuarioRepository repositoryUser)
         {
             this._context = context;
-
+            _repositoryEsp = repositoryEsp;
+            _repositoryTurno = repositoryTurno;
+            _repositoryUser = repositoryUser;
         }
 
         public async Task<Asesor> GetById(int id){
@@ -50,34 +56,403 @@ namespace ApiHelpDents.Infraestructure.Repositories
             return result.AsQueryable();
         }
 
-        /*
-        public async Task<IQueryable<Asesor>> GetByFilter(Asesor asesor)
+        
+        public async Task<IQueryable<Asesor>> GetByFilter(FilterAsesor filter)
         {
-            if(asesor == null)
-                return new List<Asesor>().AsQueryable();
-
-            var query = _context.Asesors.AsQueryable();
-
-            if(!string.IsNullOrEmpty(asesor.ClaveUsuarioNavigation.Nombres))
-                query = query.Where(x => x.ClaveUsuarioNavigation.Nombres .Contains(asesor.ClaveUsuarioNavigation.Nombres));
             
-            if(!string.IsNullOrEmpty(asesor.ClaveEspNavigation.NombreEsp))
-                query = query.Where(x => x.ClaveEspNavigation.NombreEsp == asesor.ClaveEspNavigation.NombreEsp);
+            var queryAsesores = _context.Asesors.AsQueryable().ToList();
+            List<Asesor> lista = new List<Asesor>();
+            var queryAHE = await _repositoryEsp.GetByEspecialidadId(filter.idEspecialidad);
+            var queryAHT = await _repositoryTurno.GetByTurnoId(filter.idTurno);
+            
 
-            if(!string.IsNullOrEmpty(asesor.ClaveTurnoNavigation.NombreTurno))
-                query = query.Where(x => x.ClaveTurnoNavigation.NombreTurno == asesor.ClaveTurnoNavigation.NombreTurno);
+            if(filter.idEspecialidad != null && filter.idTurno != null && filter.Costo != null){
+                foreach(var Esp in queryAHE){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == Esp.AsesorIdAsesor){
+                            foreach(var tur in queryAHT){
+                                if(Asesor.IdAsesor == tur.AsesorIdAsesor){
+                                    if(Asesor.Costo <= filter.Costo){
+                                        lista.Add(new Asesor(){
+                                            IdAsesor = Asesor.IdAsesor,
+                                            UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                            Costo = Asesor.Costo,
+                                            Telefono = Asesor.Telefono,
+                                            Descripcion = Asesor.Descripcion,
+                                            Facebook = Asesor.Facebook,
+                                            Instagram = Asesor.Instagram,
+                                            Linkendin = Asesor.Linkendin,
+                                            YouTube = Asesor.YouTube        
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                         
+            }
 
-            if(asesor.Costo >= 0){
-                query = query.Where(x => x.Costo == asesor.Costo);
 
+            if(filter.idEspecialidad != null && filter.idTurno != null && filter.Costo == null){
+                foreach(var Esp in queryAHE){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == Esp.AsesorIdAsesor){
+                            foreach(var tur in queryAHT){
+                                if(Asesor.IdAsesor == tur.AsesorIdAsesor){
+                                    lista.Add(new Asesor(){
+                                            IdAsesor = Asesor.IdAsesor,
+                                            UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                            Costo = Asesor.Costo,
+                                            Telefono = Asesor.Telefono,
+                                            Descripcion = Asesor.Descripcion,
+                                            Facebook = Asesor.Facebook,
+                                            Instagram = Asesor.Instagram,
+                                            Linkendin = Asesor.Linkendin,
+                                            YouTube = Asesor.YouTube        
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            if(filter.idEspecialidad != null && filter.idTurno == null && filter.Costo != null){
+                foreach(var Esp in queryAHE){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == Esp.AsesorIdAsesor){
+                            if(Asesor.Costo <= filter.Costo){
+                                lista.Add(new Asesor(){
+                                    IdAsesor = Asesor.IdAsesor,
+                                    UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                    Costo = Asesor.Costo,
+                                    Telefono = Asesor.Telefono,
+                                    Descripcion = Asesor.Descripcion,
+                                    Facebook = Asesor.Facebook,
+                                    Instagram = Asesor.Instagram,
+                                    Linkendin = Asesor.Linkendin,
+                                    YouTube = Asesor.YouTube        
+                                });
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            if(filter.idEspecialidad != null && filter.idTurno == null && filter.Costo == null){
+                foreach(var Esp in queryAHE){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == Esp.AsesorIdAsesor){
+                                lista.Add(new Asesor(){
+                                    IdAsesor = Asesor.IdAsesor,
+                                    UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                    Costo = Asesor.Costo,
+                                    Telefono = Asesor.Telefono,
+                                    Descripcion = Asesor.Descripcion,
+                                    Facebook = Asesor.Facebook,
+                                    Instagram = Asesor.Instagram,
+                                    Linkendin = Asesor.Linkendin,
+                                    YouTube = Asesor.YouTube        
+                                });
+                        }
+                    }
+                    
+                }
+            }
+
+
+            if(filter.idEspecialidad == null && filter.idTurno != null && filter.Costo != null){
+                foreach(var tur in queryAHT){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == tur.AsesorIdAsesor){
+                            if(Asesor.Costo <= filter.Costo){
+                                lista.Add(new Asesor(){
+                                            IdAsesor = Asesor.IdAsesor,
+                                            UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                            Costo = Asesor.Costo,
+                                            Telefono = Asesor.Telefono,
+                                            Descripcion = Asesor.Descripcion,
+                                            Facebook = Asesor.Facebook,
+                                            Instagram = Asesor.Instagram,
+                                            Linkendin = Asesor.Linkendin,
+                                            YouTube = Asesor.YouTube        
+                                });
+                            }
+                        }
+                    }
+                    
+                }
+                         
+            }
+
+            if(filter.idEspecialidad == null && filter.idTurno != null && filter.Costo == null){
+                foreach(var tur in queryAHT){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == tur.AsesorIdAsesor){
+                                lista.Add(new Asesor(){
+                                            IdAsesor = Asesor.IdAsesor,
+                                            UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                            Costo = Asesor.Costo,
+                                            Telefono = Asesor.Telefono,
+                                            Descripcion = Asesor.Descripcion,
+                                            Facebook = Asesor.Facebook,
+                                            Instagram = Asesor.Instagram,
+                                            Linkendin = Asesor.Linkendin,
+                                            YouTube = Asesor.YouTube        
+                                });
+                        }
+                    }
+                    
+                }
+                         
+            }
+
+            if(filter.idEspecialidad == null && filter.idTurno == null && filter.Costo != null){
+                foreach(var Asesor in queryAsesores){
+                    if(Asesor.Costo <= filter.Costo){
+                            lista.Add(new Asesor(){
+                                        IdAsesor = Asesor.IdAsesor,
+                                        UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                        Costo = Asesor.Costo,
+                                        Telefono = Asesor.Telefono,
+                                        Descripcion = Asesor.Descripcion,
+                                        Facebook = Asesor.Facebook,
+                                        Instagram = Asesor.Instagram,
+                                        Linkendin = Asesor.Linkendin,
+                                        YouTube = Asesor.YouTube        
+                            });
+                        }
+                    }
+                           
             }
             
-            
-            var result = await query.ToListAsync();
+            if(filter.idEspecialidad == null && filter.idTurno == null && filter.Costo == null){
+                foreach(var Asesor in queryAsesores){
+                    
+                            lista.Add(new Asesor(){
+                                        IdAsesor = Asesor.IdAsesor,
+                                        UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                        Costo = Asesor.Costo,
+                                        Telefono = Asesor.Telefono,
+                                        Descripcion = Asesor.Descripcion,
+                                        Facebook = Asesor.Facebook,
+                                        Instagram = Asesor.Instagram,
+                                        Linkendin = Asesor.Linkendin,
+                                        YouTube = Asesor.YouTube        
+                            });
 
-            return result.AsQueryable().AsNoTracking();
+                    }
+                           
+            }
+
+            if(lista.Count() == 0){
+                if(filter.idEspecialidad != 0 && filter.idTurno != 0 && filter.Costo != null){
+                foreach(var Esp in queryAHE){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == Esp.AsesorIdAsesor){
+                            foreach(var tur in queryAHT){
+                                if(Asesor.IdAsesor == tur.AsesorIdAsesor){
+                                    if(Asesor.Costo <= filter.Costo){
+                                        lista.Add(new Asesor(){
+                                            IdAsesor = Asesor.IdAsesor,
+                                            UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                            Costo = Asesor.Costo,
+                                            Telefono = Asesor.Telefono,
+                                            Descripcion = Asesor.Descripcion,
+                                            Facebook = Asesor.Facebook,
+                                            Instagram = Asesor.Instagram,
+                                            Linkendin = Asesor.Linkendin,
+                                            YouTube = Asesor.YouTube        
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                         
+            }
+
+
+            if(filter.idEspecialidad != 0 && filter.idTurno != 0 && filter.Costo == null){
+                foreach(var Esp in queryAHE){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == Esp.AsesorIdAsesor){
+                            foreach(var tur in queryAHT){
+                                if(Asesor.IdAsesor == tur.AsesorIdAsesor){
+                                    lista.Add(new Asesor(){
+                                            IdAsesor = Asesor.IdAsesor,
+                                            UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                            Costo = Asesor.Costo,
+                                            Telefono = Asesor.Telefono,
+                                            Descripcion = Asesor.Descripcion,
+                                            Facebook = Asesor.Facebook,
+                                            Instagram = Asesor.Instagram,
+                                            Linkendin = Asesor.Linkendin,
+                                            YouTube = Asesor.YouTube        
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            if(filter.idEspecialidad != 0 && filter.idTurno == 0 && filter.Costo != null){
+                foreach(var Esp in queryAHE){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == Esp.AsesorIdAsesor){
+                            if(Asesor.Costo <= filter.Costo){
+                                lista.Add(new Asesor(){
+                                    IdAsesor = Asesor.IdAsesor,
+                                    UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                    Costo = Asesor.Costo,
+                                    Telefono = Asesor.Telefono,
+                                    Descripcion = Asesor.Descripcion,
+                                    Facebook = Asesor.Facebook,
+                                    Instagram = Asesor.Instagram,
+                                    Linkendin = Asesor.Linkendin,
+                                    YouTube = Asesor.YouTube        
+                                });
+                            }
+                        }
+                    }
+                    
+                }
+            }
+
+            if(filter.idEspecialidad != 0 && filter.idTurno == 0 && filter.Costo == null){
+                foreach(var Esp in queryAHE){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == Esp.AsesorIdAsesor){
+                                lista.Add(new Asesor(){
+                                    IdAsesor = Asesor.IdAsesor,
+                                    UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                    Costo = Asesor.Costo,
+                                    Telefono = Asesor.Telefono,
+                                    Descripcion = Asesor.Descripcion,
+                                    Facebook = Asesor.Facebook,
+                                    Instagram = Asesor.Instagram,
+                                    Linkendin = Asesor.Linkendin,
+                                    YouTube = Asesor.YouTube        
+                                });
+                        }
+                    }
+                    
+                }
+            }
+
+
+            if(filter.idEspecialidad == 0 && filter.idTurno != 0 && filter.Costo != null){
+                foreach(var tur in queryAHT){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == tur.AsesorIdAsesor){
+                            if(Asesor.Costo <= filter.Costo){
+                                lista.Add(new Asesor(){
+                                            IdAsesor = Asesor.IdAsesor,
+                                            UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                            Costo = Asesor.Costo,
+                                            Telefono = Asesor.Telefono,
+                                            Descripcion = Asesor.Descripcion,
+                                            Facebook = Asesor.Facebook,
+                                            Instagram = Asesor.Instagram,
+                                            Linkendin = Asesor.Linkendin,
+                                            YouTube = Asesor.YouTube        
+                                });
+                            }
+                        }
+                    }
+                    
+                }
+                         
+            }
+
+            if(filter.idEspecialidad == 0 && filter.idTurno != 0 && filter.Costo == null){
+                foreach(var tur in queryAHT){
+                    foreach(var Asesor in queryAsesores){
+                        if(Asesor.IdAsesor == tur.AsesorIdAsesor){
+                                lista.Add(new Asesor(){
+                                            IdAsesor = Asesor.IdAsesor,
+                                            UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                            Costo = Asesor.Costo,
+                                            Telefono = Asesor.Telefono,
+                                            Descripcion = Asesor.Descripcion,
+                                            Facebook = Asesor.Facebook,
+                                            Instagram = Asesor.Instagram,
+                                            Linkendin = Asesor.Linkendin,
+                                            YouTube = Asesor.YouTube        
+                                });
+                        }
+                    }
+                    
+                }
+                         
+            }
+
+            if(filter.idEspecialidad == 0 && filter.idTurno == 0 && filter.Costo != null){
+                foreach(var Asesor in queryAsesores){
+                    if(Asesor.Costo <= filter.Costo){
+                            lista.Add(new Asesor(){
+                                        IdAsesor = Asesor.IdAsesor,
+                                        UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                        Costo = Asesor.Costo,
+                                        Telefono = Asesor.Telefono,
+                                        Descripcion = Asesor.Descripcion,
+                                        Facebook = Asesor.Facebook,
+                                        Instagram = Asesor.Instagram,
+                                        Linkendin = Asesor.Linkendin,
+                                        YouTube = Asesor.YouTube        
+                            });
+                        }
+                    }
+                           
+            }
+            
+            if(filter.idEspecialidad == 0 && filter.idTurno == 0 && filter.Costo == null){
+                foreach(var Asesor in queryAsesores){
+                    
+                            lista.Add(new Asesor(){
+                                        IdAsesor = Asesor.IdAsesor,
+                                        UsuarioIdUsuario = Asesor.UsuarioIdUsuario,
+                                        Costo = Asesor.Costo,
+                                        Telefono = Asesor.Telefono,
+                                        Descripcion = Asesor.Descripcion,
+                                        Facebook = Asesor.Facebook,
+                                        Instagram = Asesor.Instagram,
+                                        Linkendin = Asesor.Linkendin,
+                                        YouTube = Asesor.YouTube        
+                            });
+
+                    }
+                           
+            }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+            return lista.AsQueryable();
+            
         }
-        */
+        
         public async Task<int> Create(Asesor asesor){
 
             var entity = asesor;

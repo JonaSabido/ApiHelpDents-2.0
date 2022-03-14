@@ -41,6 +41,21 @@ namespace ApiHelpDents.Controller{
             var response = _mapper.Map<IEnumerable<AsesorHasComentario>, IEnumerable<AsesorComResponse>>(query);
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("asesor/{id:int}")]
+        public async Task<IActionResult> GetByIdAsesor(int id){
+
+            var query = await _repository.GetByIdAsesor(id);
+            var respuesta = _mapper.Map<IEnumerable<AsesorHasComentario>, IEnumerable<AsesorComResponse>> (query);
+            if(respuesta == null){
+                return NoContent();
+            }
+
+            return Ok(respuesta);
+        }
+
+
         [HttpGet]
         [Route("{id:int}")]
         public async Task<IActionResult> GetById(int id){

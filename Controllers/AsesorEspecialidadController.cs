@@ -54,6 +54,19 @@ namespace ApiHelpDents.Controller{
             return Ok(respuesta);
         }
 
+        [HttpGet]
+        [Route("esp/{id:int}")]
+        public async Task<IActionResult> GetByIdEspecialidad(int id){
+
+            var esp = await _repository.GetByEspecialidadId(id);
+            var respuesta = _mapper.Map<IEnumerable<AsesorHasEspecialidad>, IEnumerable<AsesorEspResponse>> (esp);
+            if(respuesta == null){
+                return NoContent();
+            }
+
+            return Ok(respuesta);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AsesorEspCreateRequest esp){
             

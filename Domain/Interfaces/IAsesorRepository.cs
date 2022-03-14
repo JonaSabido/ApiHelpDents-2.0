@@ -12,7 +12,7 @@ namespace ApiHelpDents.Domain.Interfaces
         Task<Asesor> GetById (int id);
         Task<IQueryable<Asesor>> GetAll();
         Task<IQueryable<Asesor>> GetByName(string name);
-        //Task<IQueryable<Asesor>> GetByFilter(Asesor asesor);
+        Task<IQueryable<Asesor>> GetByFilter(FilterAsesor filter);
         Task<int> Create(Asesor usuario);
         Task<bool> Update(int id, Asesor asesor);
         Task<bool> Delete(int id);

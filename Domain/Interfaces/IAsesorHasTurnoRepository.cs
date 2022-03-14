@@ -12,6 +12,7 @@ namespace ApiHelpDents.Domain.Interfaces
     {
         Task<IQueryable<AsesorHasTurno>> GetAll();
         Task<AsesorHasTurno> GetById (int id);
+        Task<IQueryable<AsesorHasTurno>> GetByTurnoId(int? id);
         Task<int> Create(AsesorHasTurno aht);
         Task<bool> Delete(int id);
         bool Exist(Expression<Func<AsesorHasTurno, bool>> expression); 

@@ -93,6 +93,10 @@ namespace ApiHelpDents.Application.Mappings
             .ForPath(dest => dest.Descripcion, opt => opt.MapFrom(src => src.Descripcion));
 
             
+            CreateMap<AsesorFilterRequest, FilterAsesor>()
+            .ForPath(dest => dest.idEspecialidad, opt => opt.MapFrom(src => src.idEspecialidad))
+            .ForPath(dest => dest.idTurno, opt => opt.MapFrom(src => src.idTurno))
+            .ForPath(dest => dest.Costo, opt => opt.MapFrom(src => src.Costo));
 
             CreateMap<ComentarioCreateRequest, Comentario>()
             .ForPath(dest => dest.UsuarioIdUsuario, opt => opt.MapFrom(src => src.ClaveUsuario))

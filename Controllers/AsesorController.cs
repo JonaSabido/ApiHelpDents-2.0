@@ -28,9 +28,15 @@ namespace ApiHelpDents.Controller{
         private readonly IEspecialidadRepository _repositoryEsp;
         private readonly ITurnoRepository _repositoryTurno;
 
+        private readonly IAsesorHasEspecialidadRepository _repositoryAHE;
+        private readonly IAsesorHasTurnoRepository _repositoryAHT;
+
         private readonly IMapper _mapper;
 
-        public AsesorController(IHttpContextAccessor httpContext, IAsesorRepository repository, IUsuarioRepository repositoryUser, IEspecialidadRepository repositoryEsp, ITurnoRepository repositoryTurno, IMapper mapper){
+        public AsesorController(IHttpContextAccessor httpContext, IAsesorRepository repository, 
+                                IUsuarioRepository repositoryUser, IEspecialidadRepository repositoryEsp, 
+                                ITurnoRepository repositoryTurno, IAsesorHasEspecialidadRepository repositoryAHE, IAsesorHasTurnoRepository repositoryAHT, 
+                                IMapper mapper){
             
             this._httpContext = httpContext;
             this._mapper = mapper;
@@ -38,6 +44,8 @@ namespace ApiHelpDents.Controller{
             _repositoryUser = repositoryUser;
             _repositoryEsp = repositoryEsp;
             _repositoryTurno = repositoryTurno;
+            _repositoryAHE = repositoryAHE;
+            _repositoryAHT = repositoryAHT;
         }
 
         [HttpGet]
@@ -81,6 +89,32 @@ namespace ApiHelpDents.Controller{
 
             return Ok(respuesta);
         }
+
+        [HttpGet]
+        [Route("filter")]
+        public async Task<IActionResult> Filter(int? idEspecialidad, int? idTurno, double? Costo){
+
+            FilterAsesor fa = new FilterAsesor();
+            fa.idEspecialidad = idEspecialidad;
+            fa.idTurno = idTurno;
+            fa.Costo = Costo;
+
+
+            var query = await _repository.GetByFilter(fa);
+            
+            
+            foreach(var entity in query){
+            
+                var u = await _repositoryUser.GetById(entity.UsuarioIdUsuario);
+                entity.UsuarioIdUsuarioNavigation = u;
+                
+            }
+
+            
+
+            var response = _mapper.Map<IEnumerable<Asesor>,IEnumerable<AsesorResponse>>(query);    
+            return Ok(response);
+        }
         /*
         [HttpGet]
         [Route("search/filters")]
@@ -120,9 +154,7 @@ namespace ApiHelpDents.Controller{
         {
             var query = await _repository.GetByName(name);
             
-            if(query.Count() == 0){
-                return NoContent();
-            }
+            
 
             foreach(var entity in query){
                 
