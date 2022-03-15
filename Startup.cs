@@ -40,8 +40,7 @@ namespace ApiHelpDents
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiHelpDents", Version = "v1" });
             });
-
-            services.AddTransient<IAdministradorRepository, AdministradorRepository>();
+            
             services.AddTransient<IAsesorRepository, AsesorRepository>();
             services.AddTransient<IComentarioRepository, ComentarioRepository>();
             services.AddTransient<IEspecialidadRepository, EspecialidadRepository>();

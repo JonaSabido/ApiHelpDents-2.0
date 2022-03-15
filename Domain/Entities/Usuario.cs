@@ -18,7 +18,9 @@ namespace ApiHelpDents.Domain.Entities
         public string Apellido { get; set; }
         public string Correo { get; set; }
         public string Contraseña { get; set; }
+        public int RolIdRol { get; set; }
 
+        public virtual Rol RolIdRolNavigation { get; set; }
         public virtual ICollection<Asesor> Asesors { get; set; }
         public virtual ICollection<Comentario> Comentarios { get; set; }
     }

@@ -8,5 +8,6 @@ namespace ApiHelpDents.Domain.Dtos.Requests
         public string Apellidos{get; set;}
         public string Correo {get; set;}
         public string Contraseña{get; set;}
+        public int RolIdRol{get; set;}
     }
 }

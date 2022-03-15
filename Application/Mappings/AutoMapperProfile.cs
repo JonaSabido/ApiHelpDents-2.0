@@ -11,15 +11,7 @@ namespace ApiHelpDents.Application.Mappings
     {
         public AutoMapperProfile(){
 
-            //Responses
-            CreateMap<Administrador, AdminResponse>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.IdAdministrador))
-            .ForMember(dest => dest.Nombres, opt => opt.MapFrom(src => src.Nombre))
-            .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.Apellido))
-            .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
-            .ForMember(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
-
-            
+            //Responses 
             CreateMap<Asesor, AsesorResponse>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.IdAsesor))
             .ForMember(dest => dest.UsuarioIdUsuario, opt => opt.MapFrom(src => src.UsuarioIdUsuario))
@@ -57,7 +49,8 @@ namespace ApiHelpDents.Application.Mappings
             .ForMember(dest => dest.Nombres, opt => opt.MapFrom(src => src.Nombre))
             .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.Apellido))
             .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
-            .ForMember(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
+            .ForMember(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña))
+            .ForMember(dest => dest.RolIdRol, opt => opt.MapFrom(src => src.RolIdRol));
 
             CreateMap<AsesorHasEspecialidad, AsesorEspResponse>()
             .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
@@ -76,12 +69,6 @@ namespace ApiHelpDents.Application.Mappings
 
 
             //Creates
-            CreateMap<AdminCreateRequest, Administrador>()
-            .ForPath(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombres))
-            .ForPath(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellidos))
-            .ForPath(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
-            .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
-
             CreateMap<AsesorCreateRequest, Asesor>()
             .ForPath(dest => dest.UsuarioIdUsuario, opt => opt.MapFrom(src => src.UsuarioIdUsuario))
             .ForPath(dest => dest.Costo, opt => opt.MapFrom(src => src.Costo))
@@ -112,7 +99,8 @@ namespace ApiHelpDents.Application.Mappings
             .ForPath(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombres))
             .ForPath(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellidos))
             .ForPath(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
-            .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
+            .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña))
+            .ForPath(dest => dest.RolIdRol, opt => opt.MapFrom(src => src.RolIdRol));
 
             CreateMap<AsesorEspCreateRequest, AsesorHasEspecialidad>()
             .ForPath(dest => dest.AsesorIdAsesor, opt => opt.MapFrom(src => src.Asesor_idAsesor))
@@ -127,14 +115,7 @@ namespace ApiHelpDents.Application.Mappings
             .ForPath(dest => dest.TurnoIdTurno, opt => opt.MapFrom(src => src.Turno_idTurno));
 
             //Updates
-            CreateMap<AdminUpdateRequest, Administrador>()
-            .ForPath(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombres))
-            .ForPath(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellidos))
-            .ForPath(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
-            .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
-
-            CreateMap<AsesorUpdateRequest, Asesor>()
-            
+            CreateMap<AsesorUpdateRequest, Asesor>()       
             .ForPath(dest => dest.Costo, opt => opt.MapFrom(src => src.Costo))
             .ForPath(dest => dest.Telefono, opt => opt.MapFrom(src => src.Telefono))
             .ForPath(dest => dest.Facebook, opt => opt.MapFrom(src => src.Facebook))
@@ -147,7 +128,8 @@ namespace ApiHelpDents.Application.Mappings
             .ForPath(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombres))
             .ForPath(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellidos))
             .ForPath(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
-            .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
+            .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña))
+            .ForPath(dest => dest.RolIdRol, opt => opt.MapFrom(src => src.RolIdRol));
             
 
             

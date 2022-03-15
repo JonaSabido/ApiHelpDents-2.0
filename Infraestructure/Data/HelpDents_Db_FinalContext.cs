@@ -18,22 +18,22 @@ namespace ApiHelpDents.Infraestructure.Data
         {
         }
 
-        public virtual DbSet<Administrador> Administradors { get; set; }
         public virtual DbSet<Asesor> Asesors { get; set; }
         public virtual DbSet<AsesorHasComentario> AsesorHasComentarios { get; set; }
         public virtual DbSet<AsesorHasEspecialidad> AsesorHasEspecialidads { get; set; }
         public virtual DbSet<AsesorHasTurno> AsesorHasTurnos { get; set; }
         public virtual DbSet<Comentario> Comentarios { get; set; }
         public virtual DbSet<Especialidad> Especialidads { get; set; }
+        public virtual DbSet<Rol> Rols { get; set; }
         public virtual DbSet<Turno> Turnos { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
 
-       /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=JONA; Initial Catalog=HelpDents_Db_Final; Integrated Security=True;");
+                optionsBuilder.UseSqlServer("Data Source=JONA; Initial Catalog=HelpDents_DB_Final; Integrated Security=true;");
             }
         } */
 
@@ -41,40 +41,10 @@ namespace ApiHelpDents.Infraestructure.Data
         {
             modelBuilder.HasAnnotation("Relational:Collation", "Modern_Spanish_CI_AS");
 
-            modelBuilder.Entity<Administrador>(entity =>
-            {
-                entity.HasKey(e => e.IdAdministrador)
-                    .HasName("PK__Administ__EBE80EA1FE402DB1");
-
-                entity.ToTable("Administrador");
-
-                entity.Property(e => e.IdAdministrador).HasColumnName("idAdministrador");
-
-                entity.Property(e => e.Apellido)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Contraseña)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Correo)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-            });
-
             modelBuilder.Entity<Asesor>(entity =>
             {
                 entity.HasKey(e => e.IdAsesor)
-                    .HasName("PK__Asesor__A801FCE9F943863A");
+                    .HasName("PK__Asesor__A801FCE9760608D6");
 
                 entity.ToTable("Asesor");
 
@@ -113,12 +83,20 @@ namespace ApiHelpDents.Infraestructure.Data
                     .WithMany(p => p.Asesors)
                     .HasForeignKey(d => d.UsuarioIdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Asesor__Usuario___2C3393D0");
+                    .HasConstraintName("FK__Asesor__Usuario___300424B4");
             });
 
             modelBuilder.Entity<AsesorHasComentario>(entity =>
             {
                 entity.ToTable("Asesor_has_Comentario");
+
+                entity.HasIndex(e => e.AsesorIdAsesor, "Asesor_has_Comentario_FKIndex1");
+
+                entity.HasIndex(e => e.ComentarioIdComentario, "Asesor_has_Comentario_FKIndex2");
+
+                entity.HasIndex(e => e.ComentarioIdComentario, "IFK_Pertenece");
+
+                entity.HasIndex(e => e.AsesorIdAsesor, "IFK_Tiene");
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
@@ -130,13 +108,13 @@ namespace ApiHelpDents.Infraestructure.Data
                     .WithMany(p => p.AsesorHasComentarios)
                     .HasForeignKey(d => d.AsesorIdAsesor)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Asesor_ha__Aseso__3A81B327");
+                    .HasConstraintName("FK__Asesor_ha__Aseso__32E0915F");
 
                 entity.HasOne(d => d.ComentarioIdComentarioNavigation)
                     .WithMany(p => p.AsesorHasComentarios)
                     .HasForeignKey(d => d.ComentarioIdComentario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Asesor_ha__Comen__3B75D760");
+                    .HasConstraintName("FK__Asesor_ha__Comen__33D4B598");
             });
 
             modelBuilder.Entity<AsesorHasEspecialidad>(entity =>
@@ -161,13 +139,13 @@ namespace ApiHelpDents.Infraestructure.Data
                     .WithMany(p => p.AsesorHasEspecialidads)
                     .HasForeignKey(d => d.AsesorIdAsesor)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Asesor_ha__Aseso__2F10007B");
+                    .HasConstraintName("FK__Asesor_ha__Aseso__36B12243");
 
                 entity.HasOne(d => d.EspecialidadIdEspecialidadNavigation)
                     .WithMany(p => p.AsesorHasEspecialidads)
                     .HasForeignKey(d => d.EspecialidadIdEspecialidad)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Asesor_ha__Espec__300424B4");
+                    .HasConstraintName("FK__Asesor_ha__Espec__37A5467C");
             });
 
             modelBuilder.Entity<AsesorHasTurno>(entity =>
@@ -190,19 +168,19 @@ namespace ApiHelpDents.Infraestructure.Data
                     .WithMany(p => p.AsesorHasTurnos)
                     .HasForeignKey(d => d.AsesorIdAsesor)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Asesor_ha__Aseso__32E0915F");
+                    .HasConstraintName("FK__Asesor_ha__Aseso__3A81B327");
 
                 entity.HasOne(d => d.TurnoIdTurnoNavigation)
                     .WithMany(p => p.AsesorHasTurnos)
                     .HasForeignKey(d => d.TurnoIdTurno)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Asesor_ha__Turno__33D4B598");
+                    .HasConstraintName("FK__Asesor_ha__Turno__3B75D760");
             });
 
             modelBuilder.Entity<Comentario>(entity =>
             {
                 entity.HasKey(e => e.IdComentario)
-                    .HasName("PK__Comentar__C74515DAB3A6B13D");
+                    .HasName("PK__Comentar__C74515DACE420F98");
 
                 entity.ToTable("Comentario");
 
@@ -218,13 +196,13 @@ namespace ApiHelpDents.Infraestructure.Data
                     .WithMany(p => p.Comentarios)
                     .HasForeignKey(d => d.UsuarioIdUsuario)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Comentari__Usuar__36B12243");
+                    .HasConstraintName("FK__Comentari__Usuar__2D27B809");
             });
 
             modelBuilder.Entity<Especialidad>(entity =>
             {
                 entity.HasKey(e => e.IdEspecialidad)
-                    .HasName("PK__Especial__E8AB1600338A255F");
+                    .HasName("PK__Especial__E8AB160079F93F53");
 
                 entity.ToTable("Especialidad");
 
@@ -236,10 +214,25 @@ namespace ApiHelpDents.Infraestructure.Data
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<Rol>(entity =>
+            {
+                entity.HasKey(e => e.IdRol)
+                    .HasName("PK__Rol__3C872F76D3AC223B");
+
+                entity.ToTable("Rol");
+
+                entity.Property(e => e.IdRol).HasColumnName("idRol");
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Turno>(entity =>
             {
                 entity.HasKey(e => e.IdTurno)
-                    .HasName("PK__Turno__AA068B011834FCEB");
+                    .HasName("PK__Turno__AA068B01FD8F6B00");
 
                 entity.ToTable("Turno");
 
@@ -254,7 +247,7 @@ namespace ApiHelpDents.Infraestructure.Data
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.IdUsuario)
-                    .HasName("PK__Usuario__645723A6E9FF5A5A");
+                    .HasName("PK__Usuario__645723A68FE5F7D1");
 
                 entity.ToTable("Usuario");
 
@@ -267,7 +260,7 @@ namespace ApiHelpDents.Infraestructure.Data
 
                 entity.Property(e => e.Contraseña)
                     .IsRequired()
-                    .HasMaxLength(16)
+                    .HasMaxLength(40)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Correo)
@@ -279,6 +272,14 @@ namespace ApiHelpDents.Infraestructure.Data
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.Property(e => e.RolIdRol).HasColumnName("Rol_idRol");
+
+                entity.HasOne(d => d.RolIdRolNavigation)
+                    .WithMany(p => p.Usuarios)
+                    .HasForeignKey(d => d.RolIdRol)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Usuario__Rol_idR__267ABA7A");
             });
 
             OnModelCreatingPartial(modelBuilder);

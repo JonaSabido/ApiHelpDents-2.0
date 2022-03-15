@@ -30,7 +30,7 @@ namespace ApiHelpDents.Infraestructure.Repositories
         public async Task<IQueryable<Usuario>> GetAll()
         {
             
-            var query = await _context.Usuarios.AsQueryable<Usuario>().AsNoTracking().ToListAsync();
+            var query = await _context.Usuarios.AsQueryable<Usuario>().OrderBy(x => x.RolIdRol).ToListAsync();
             return query.AsQueryable();
         }
 
@@ -59,6 +59,7 @@ namespace ApiHelpDents.Infraestructure.Repositories
             entity.Apellido = user.Apellido;
             entity.Correo = user.Correo;
             entity.Contraseña = user.Contraseña;
+            entity.RolIdRol = user.RolIdRol;
 
             _context.Update(entity);
 
