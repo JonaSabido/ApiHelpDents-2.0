@@ -27,6 +27,11 @@ namespace ApiHelpDents.Infraestructure.Repositories
             var entity = await _context.Usuarios.FirstOrDefaultAsync(x => x.IdUsuario == id);
             return entity;
         }
+        public async Task<Usuario> GetByCorreo(string correo){
+
+            var entity = await _context.Usuarios.FirstOrDefaultAsync(x => x.Correo == correo);
+            return entity;
+        }
         public async Task<IQueryable<Usuario>> GetAll()
         {
             

@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,11 +15,13 @@ using Microsoft.Extensions.Options;
 using AutoMapper;
 using ApiHelpDents.Domain.Dtos.Requests;
 using ApiHelpDents.Domain.Dtos.Responses;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiHelpDents.Controller{
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
 
     public class UsuarioController : ControllerBase{
 
