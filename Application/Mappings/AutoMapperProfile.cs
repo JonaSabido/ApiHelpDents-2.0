@@ -52,6 +52,12 @@ namespace ApiHelpDents.Application.Mappings
             .ForMember(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña))
             .ForMember(dest => dest.RolIdRol, opt => opt.MapFrom(src => src.RolIdRol));
 
+            CreateMap<Usuario, LoginResponse>()
+            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.IdUsuario))
+            .ForMember(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
+            .ForMember(dest => dest.RolIdRol, opt => opt.MapFrom(src => src.RolIdRol))
+            .ForMember(dest => dest.Token, opt => opt.MapFrom(src => src.Token));
+
             CreateMap<AsesorHasEspecialidad, AsesorEspResponse>()
             .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.Id))
             .ForMember(dest => dest.Asesor_idAsesor, opt => opt.MapFrom(src => src.AsesorIdAsesor))

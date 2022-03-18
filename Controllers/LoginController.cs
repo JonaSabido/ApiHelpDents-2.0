@@ -11,6 +11,7 @@ using ApiHelpDents.Data;
 using ApiHelpDents.Domain.Interfaces;
 using AutoMapper;
 using ApiHelpDents.Domain.Dtos.Requests;
+using ApiHelpDents.Domain.Entities;
 
 namespace ApiHelpDents.Controller{
 
@@ -37,16 +38,35 @@ namespace ApiHelpDents.Controller{
 
             var entity = await _repository.GetByCorreo(login.Correo);
             if(entity == null){
-                tokenClass.TokenOrMessage = "Esta cuenta no existe";
-                return Ok(tokenClass);
+                return StatusCode(401);
             }
             bool credentials = entity.Contraseña.Equals(login.Contraseña);
             if(!credentials){
-                tokenClass.TokenOrMessage = "Contraseña incorrecta";
-                return Ok(tokenClass);
+                return StatusCode(401);
             }
             tokenClass.TokenOrMessage = TokenManager.GenerateToken(login.Correo);
-            return Ok(tokenClass);
+            string token = tokenClass.TokenOrMessage;
+            entity.Token = token;
+            await _repository.Update(entity.IdUsuario, entity);
+            var respuesta = _mapper.Map<Usuario,LoginResponse>(entity);
+            return Ok(respuesta);
         }
+
+        [HttpGet]
+        [Route("ValidateToken/{token}")]
+        public async Task<IActionResult> Validate(string token){
+            
+            var usuario = TokenManager.ValidateToken(token);
+
+            if(usuario != null){
+                var entity = await _repository.GetByCorreo(usuario);
+                var response = _mapper.Map<Usuario,LoginResponse>(entity);
+                return Ok(response);
+            }
+            else{
+                return StatusCode(401);
+            }
+        }
+
     }
 }

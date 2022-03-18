@@ -28,7 +28,7 @@ namespace ApiHelpDents.Infraestructure.Data
         public virtual DbSet<Turno> Turnos { get; set; }
         public virtual DbSet<Usuario> Usuarios { get; set; }
 
-        /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /*  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
@@ -274,6 +274,9 @@ namespace ApiHelpDents.Infraestructure.Data
                     .IsUnicode(false);
 
                 entity.Property(e => e.RolIdRol).HasColumnName("Rol_idRol");
+
+                entity.Property(e => e.Token)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.RolIdRolNavigation)
                     .WithMany(p => p.Usuarios)

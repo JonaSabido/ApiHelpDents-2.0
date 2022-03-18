@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System;
 using System.Collections;
@@ -15,13 +17,12 @@ using Microsoft.Extensions.Options;
 using AutoMapper;
 using ApiHelpDents.Domain.Dtos.Requests;
 using ApiHelpDents.Domain.Dtos.Responses;
-using Microsoft.AspNetCore.Authorization;
+using ApiHelpDents.Data;
 
 namespace ApiHelpDents.Controller{
 
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
 
     public class UsuarioController : ControllerBase{
 
@@ -38,12 +39,23 @@ namespace ApiHelpDents.Controller{
 
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAll(){
+        public async Task<IActionResult> GetAll(/*[FromBody] RequestToken token*/ /*HttpRequestMessage re*/){
+            
+            //string token = Convert.ToString(Request.Headers["Authorization"]);
+            //var usuario = TokenManager.ValidateToken(token);
 
-            var query = await _repository.GetAll();
-            var response = _mapper.Map<IEnumerable<Usuario>, IEnumerable<UsuarioResponse>>(query);
-            return Ok(response);
+            //if(usuario != null){
+                var query = await _repository.GetAll();
+                var response = _mapper.Map<IEnumerable<Usuario>, IEnumerable<UsuarioResponse>>(query);
+                return Ok(response);
+           // }
+            //else{
+                //return StatusCode(401);
+            //}
         }
+            
+            
+        
 
         [HttpGet]
         [Route("{id:int}")]
