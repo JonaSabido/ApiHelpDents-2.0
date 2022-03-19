@@ -55,6 +55,19 @@ namespace ApiHelpDents.Controller{
             return Ok(respuesta);
         }
 
+        [HttpGet]
+        [Route("comentario/{id:int}")]
+        public async Task<IActionResult> GetByComentario(int id){
+
+            var query = await _repository.GetByComentario(id);
+            var respuesta = _mapper.Map<AsesorHasComentario, AsesorComResponse> (query);
+            if(respuesta == null){
+                return NoContent();
+            }
+
+            return Ok(respuesta);
+        }
+
 
         [HttpGet]
         [Route("{id:int}")]

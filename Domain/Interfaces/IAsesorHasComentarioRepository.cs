@@ -12,6 +12,7 @@ namespace ApiHelpDents.Domain.Interfaces
     {
         Task<IQueryable<AsesorHasComentario>> GetAll();
         Task<AsesorHasComentario> GetById (int id);
+        Task<AsesorHasComentario> GetByComentario (int id);
         Task<IQueryable<AsesorHasComentario>> GetByIdAsesor (int id);
         Task<int> Create(AsesorHasComentario ahc);
         Task<bool> Delete(int id);

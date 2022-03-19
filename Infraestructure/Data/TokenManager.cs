@@ -20,7 +20,7 @@ namespace ApiHelpDents.Data
                     new Claim(ClaimTypes.Name, username)
                 }),
                 //Configurar el tiempo de vencimiento del Token.
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(100),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
             };
             JwtSecurityTokenHandler hendler = new JwtSecurityTokenHandler();

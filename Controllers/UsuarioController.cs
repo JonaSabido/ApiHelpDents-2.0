@@ -1,3 +1,4 @@
+using System.Resources;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -74,13 +75,19 @@ namespace ApiHelpDents.Controller{
         public async Task<IActionResult> Create([FromBody] UsuarioCreateRequest usuario){
             
             var entity = _mapper.Map<UsuarioCreateRequest, Usuario>(usuario);
-            var id = await _repository.Create(entity);
-            if(id <= 0){
-                return Conflict("No se puede realizar el registro");
-            }
+            if(!_repository.ExistCorreo(usuario.Correo)){
+                var id = await _repository.Create(entity);
+                if(id <= 0){
+                    return Conflict("No se puede realizar el registro");
+                }
 
-            var urlresult = $"https://{_httpContext.HttpContext.Request.Host.Value}/api/administrador/{id}";
-            return Created(urlresult, id);
+                var urlresult = $"https://{_httpContext.HttpContext.Request.Host.Value}/api/administrador/{id}";
+                return Created(urlresult, id);
+            }
+            else{
+                return Conflict("Ya existe un usuario con este correo");
+            }
+            
             
         }
 
@@ -89,16 +96,23 @@ namespace ApiHelpDents.Controller{
 
         public async Task<IActionResult> Update(int id, [FromBody]UsuarioUpdateRequest usuario){
 
-            if(id <= 0 || !_repository.Exist(i => i.IdUsuario == id))
+            var user = await _repository.GetByCorreo(usuario.Correo);
+            if(user == null || user.IdUsuario == id ){
+                if(id <= 0 || !_repository.Exist(i => i.IdUsuario == id))
                 return NotFound("El registro no fué encontrado, veifica tu información...");
 
-            var entity = _mapper.Map<UsuarioUpdateRequest, Usuario>(usuario);
-            var update = await _repository.Update(id, entity);
+                var entity = _mapper.Map<UsuarioUpdateRequest, Usuario>(usuario);
+                var update = await _repository.Update(id, entity);
 
-            if(!update)
-                return Conflict("Ocurrió un fallo al intentar realizar la modificación...");
+                if(!update)
+                    return Conflict("Ocurrió un fallo al intentar realizar la modificación...");
 
-            return Ok("Se han actualizado los datos correctamente...");
+                return Ok("Se han actualizado los datos correctamente...");
+            }
+            else{
+                return Conflict("Ya existe un usuario con este correo");
+            }
+            
 
         }
 

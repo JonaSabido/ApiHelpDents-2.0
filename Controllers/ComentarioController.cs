@@ -101,8 +101,11 @@ namespace ApiHelpDents.Controller{
                 return Conflict("No se puede realizar el registro");
             }
 
+            ComentarioIdResponse response = new ComentarioIdResponse();
+            response.Id = id;
+
             var urlresult = $"https://{_httpContext.HttpContext.Request.Host.Value}/api/comentario/{id}";
-            return Created(urlresult, id);
+            return Ok(response);
             
         }
 

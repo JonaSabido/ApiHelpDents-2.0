@@ -31,6 +31,10 @@ namespace ApiHelpDents.Infraestructure.Repositories
             var query = await _context.AsesorHasComentarios.AsQueryable<AsesorHasComentario>().Where(x => x.AsesorIdAsesor == id).ToListAsync();
             return query.AsQueryable();
         }
+        public async Task<AsesorHasComentario> GetByComentario(int id){
+            var entity = await _context.AsesorHasComentarios.FirstOrDefaultAsync(x => x.ComentarioIdComentario == id);
+            return entity;
+        }
         public async Task<IQueryable<AsesorHasComentario>> GetAll()
         {
             
@@ -39,16 +43,21 @@ namespace ApiHelpDents.Infraestructure.Repositories
         }
 
         public async Task<int> Create(AsesorHasComentario ahe){
+            
+            //var exist = await _context.AsesorHasComentarios.FirstAsync(x => x.AsesorIdAsesor == ahe.AsesorIdAsesor && x.ComentarioIdComentario == ahe.ComentarioIdComentario);
+            //if(exist == null){
+                var entity = ahe;
+                await _context.AddAsync(entity);
+                var rows = await _context.SaveChangesAsync();
 
-            var entity = ahe;
-            await _context.AddAsync(entity);
-            var rows = await _context.SaveChangesAsync();
+                if(rows<=0){
+                    throw new Exception("No pudo realizarse el registro");
+                }
 
-            if(rows<=0){
-                throw new Exception("No pudo realizarse el registro");
-            }
-
-            return entity.Id;
+                return entity.Id;
+            //}
+            //return 0;
+            
         }
         public async Task<bool> Delete(int id){
 

@@ -91,5 +91,15 @@ namespace ApiHelpDents.Infraestructure.Repositories
         {
             return _context.Usuarios.Any(expression);
         }
+        public bool ExistCorreo(string Correo){
+            var entity = _context.Usuarios.FirstOrDefaultAsync(x => x.Correo == Correo);
+            if(entity == null){
+                return false;
+            }
+            else{
+                return true;
+            }
+            
+        }
     }
 }
