@@ -455,15 +455,22 @@ namespace ApiHelpDents.Infraestructure.Repositories
         
         public async Task<int> Create(Asesor asesor){
 
-            var entity = asesor;
-            await _context.AddAsync(entity);
-            var rows = await _context.SaveChangesAsync();
+            var validator = await _context.Asesors.FirstOrDefaultAsync(x => x.UsuarioIdUsuario == asesor.UsuarioIdUsuario);
+            if(validator == null){
+                var entity = asesor;
+                await _context.AddAsync(entity);
+                var rows = await _context.SaveChangesAsync();
 
-            if(rows<=0){
-                throw new Exception("No pudo realizarse el registro");
+                if(rows<=0){
+                    throw new Exception("No pudo realizarse el registro");
+                }
+
+                return entity.IdAsesor;
             }
-
-            return entity.IdAsesor;
+            else{
+                return 0;
+            }
+            
         }
 
         public async Task<bool> Update(int id, Asesor asesor){

@@ -26,6 +26,11 @@ namespace ApiHelpDents.Infraestructure.Repositories
             var entity = await _context.Especialidads.FirstOrDefaultAsync(x => x.IdEspecialidad == id);
             return entity;
         }
+        public async Task<Especialidad> GetByName(string name){
+
+            var entity = await _context.Especialidads.FirstOrDefaultAsync(x => x.Nombre == name);
+            return entity;
+        }
 
         public async Task<IQueryable<Especialidad>> GetAll()
         {

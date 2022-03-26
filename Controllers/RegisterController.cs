@@ -39,14 +39,21 @@ namespace ApiHelpDents.Controller{
         [HttpPost]
         public async Task<IActionResult> Register ([FromBody] UsuarioCreateRequest usuario){
 
-            var entity = _mapper.Map<UsuarioCreateRequest, Usuario>(usuario);
-            entity.RolIdRol = 3;
-            var id = await _repository.Create(entity);
-            if(id <= 0){
-                return Conflict("No se puede realizar el registro");
-            }
+            var user = await _repository.GetByCorreo(usuario.Correo);
+            if(user==null){
+                var entity = _mapper.Map<UsuarioCreateRequest, Usuario>(usuario);
+                entity.RolIdRol = 3;
+                var id = await _repository.Create(entity);
+                if(id <= 0){
+                    return Conflict("No se puede realizar el registro");
+                }
 
-            return Ok();
+                return Ok();
+            }
+            else{
+                return Conflict("Ya existe un usuario con este correo");
+            }
+            
         }
     }
 }

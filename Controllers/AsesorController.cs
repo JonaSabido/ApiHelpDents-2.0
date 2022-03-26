@@ -1,16 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO.Compression;
-using System.IO.Pipelines;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ApiHelpDents.Domain.Entities;
-using ApiHelpDents.Infraestructure.Repositories;
 using ApiHelpDents.Domain.Interfaces;
-using Microsoft.Extensions.Options;
 using AutoMapper;
 using ApiHelpDents.Domain.Dtos.Requests;
 using ApiHelpDents.Domain.Dtos.Responses;
@@ -55,17 +48,11 @@ namespace ApiHelpDents.Controller{
             var query = await _repository.GetAll();
 
             foreach(var entity in query){
-                
-                
                 Usuario usuario = await _repositoryUser.GetById(entity.UsuarioIdUsuario);
 
                 entity.UsuarioIdUsuarioNavigation.Nombre = usuario.Nombre;
                 entity.UsuarioIdUsuarioNavigation.Apellido = usuario.Apellido;
-                
-
-                
             }
-            
             var response = _mapper.Map<IEnumerable<Asesor>, IEnumerable<AsesorResponse>>(query);
             return Ok(response);
         }
@@ -98,20 +85,13 @@ namespace ApiHelpDents.Controller{
             fa.idEspecialidad = idEspecialidad;
             fa.idTurno = idTurno;
             fa.Costo = Costo;
-
-
             var query = await _repository.GetByFilter(fa);
-            
-            
             foreach(var entity in query){
             
                 var u = await _repositoryUser.GetById(entity.UsuarioIdUsuario);
                 entity.UsuarioIdUsuarioNavigation = u;
                 
             }
-
-            
-
             var response = _mapper.Map<IEnumerable<Asesor>,IEnumerable<AsesorResponse>>(query);    
             return Ok(response);
         }
@@ -154,19 +134,11 @@ namespace ApiHelpDents.Controller{
         {
             var query = await _repository.GetByName(name);
             
-            
-
             foreach(var entity in query){
                 
-                
                 Usuario usuario = await _repositoryUser.GetById(entity.UsuarioIdUsuario);
-                
-
                 entity.UsuarioIdUsuarioNavigation.Nombre = usuario.Nombre;
                 entity.UsuarioIdUsuarioNavigation.Apellido = usuario.Apellido;
-                
-
-                
             }
             var response = _mapper.Map<IEnumerable<Asesor>,IEnumerable<AsesorResponse>>(query);       
             return Ok(response);
@@ -182,8 +154,7 @@ namespace ApiHelpDents.Controller{
             }
 
             var urlresult = $"https://{_httpContext.HttpContext.Request.Host.Value}/api/administrador/{id}";
-            return Created(urlresult, id);
-            
+            return Created(urlresult, id);  
         }
 
         [HttpPut]

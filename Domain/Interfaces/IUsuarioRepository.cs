@@ -16,6 +16,6 @@ namespace ApiHelpDents.Domain.Interfaces
         Task<bool> Update(int id, Usuario usuario);
         Task<bool> Delete(int id);
         bool Exist(Expression<Func<Usuario, bool>> expression);
-        public bool ExistCorreo(string Correo);
+        bool ExistCorreo(string Correo);
     }
 }

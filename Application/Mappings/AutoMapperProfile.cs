@@ -27,6 +27,7 @@ namespace ApiHelpDents.Application.Mappings
 
             CreateMap<Comentario, ComentarioResponse>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.IdComentario))
+            .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom(src => src.UsuarioIdUsuario))
             .ForMember(dest => dest.Nombres, opt => opt.MapFrom(src => src.UsuarioIdUsuarioNavigation.Nombre))
             .ForMember(dest => dest.Apellidos, opt => opt.MapFrom(src => src.UsuarioIdUsuarioNavigation.Apellido))
             .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.Descripcion));
@@ -73,6 +74,24 @@ namespace ApiHelpDents.Application.Mappings
             .ForMember(dest => dest.Asesor_idAsesor, opt => opt.MapFrom(src => src.AsesorIdAsesor))
             .ForMember(dest => dest.Turno_idTurno, opt => opt.MapFrom(src => src.TurnoIdTurno));
 
+            CreateMap<Solicitud, SolicitudResponse>()
+            .ForMember(dest => dest.IdSolicitud, opt => opt.MapFrom(src => src.IdSolicitud))
+            .ForMember(dest => dest.UsuarioIdUsuario, opt => opt.MapFrom(src => src.UsuarioIdUsuario))
+            .ForMember(dest => dest.Especialidad1, opt => opt.MapFrom(src => src.Especialidad1))
+            .ForMember(dest => dest.Especialidad2, opt => opt.MapFrom(src => src.Especialidad2))
+            .ForMember(dest => dest.Especialidad3, opt => opt.MapFrom(src => src.Especialidad3))
+            .ForMember(dest => dest.Turno1, opt => opt.MapFrom(src => src.Turno1))
+            .ForMember(dest => dest.Turno2, opt => opt.MapFrom(src => src.Turno2))
+            .ForMember(dest => dest.Turno3, opt => opt.MapFrom(src => src.Turno3))
+            .ForMember(dest => dest.Costo, opt => opt.MapFrom(src => src.Costo))
+            .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.Telefono))
+            .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.Descripcion))
+            .ForMember(dest => dest.Facebook, opt => opt.MapFrom(src => src.Facebook))
+            .ForMember(dest => dest.Instagram, opt => opt.MapFrom(src => src.Instagram))
+            .ForMember(dest => dest.Linkendin, opt => opt.MapFrom(src => src.Linkendin))
+            .ForMember(dest => dest.YouTube, opt => opt.MapFrom(src => src.YouTube))
+            .ForMember(dest => dest.Tipo, opt => opt.MapFrom(src => src.Tipo))
+            .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado));
 
             //Creates
             CreateMap<AsesorCreateRequest, Asesor>()
@@ -105,7 +124,8 @@ namespace ApiHelpDents.Application.Mappings
             .ForPath(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombres))
             .ForPath(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellidos))
             .ForPath(dest => dest.Correo, opt => opt.MapFrom(src => src.Correo))
-            .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña));
+            .ForPath(dest => dest.Contraseña, opt => opt.MapFrom(src => src.Contraseña))
+            .ForPath(dest => dest.RolIdRol, opt => opt.MapFrom(src => src.RolIdRol));
 
             CreateMap<AsesorEspCreateRequest, AsesorHasEspecialidad>()
             .ForPath(dest => dest.AsesorIdAsesor, opt => opt.MapFrom(src => src.Asesor_idAsesor))
@@ -118,6 +138,25 @@ namespace ApiHelpDents.Application.Mappings
             CreateMap<AsesorTurnoCreateRequest, AsesorHasTurno>()
             .ForPath(dest => dest.AsesorIdAsesor, opt => opt.MapFrom(src => src.Asesor_idAsesor))
             .ForPath(dest => dest.TurnoIdTurno, opt => opt.MapFrom(src => src.Turno_idTurno));
+
+            CreateMap<SolicitudCreateRequest, Solicitud>()
+            .ForPath(dest => dest.UsuarioIdUsuario, opt => opt.MapFrom(src => src.UsuarioIdUsuario))
+            .ForPath(dest => dest.Especialidad1, opt => opt.MapFrom(src => src.Especialidad1))
+            .ForPath(dest => dest.Especialidad2, opt => opt.MapFrom(src => src.Especialidad2))
+            .ForPath(dest => dest.Especialidad3, opt => opt.MapFrom(src => src.Especialidad3))
+            .ForPath(dest => dest.Turno1, opt => opt.MapFrom(src => src.Turno1))
+            .ForPath(dest => dest.Turno2, opt => opt.MapFrom(src => src.Turno2))
+            .ForPath(dest => dest.Turno3, opt => opt.MapFrom(src => src.Turno3))
+            .ForPath(dest => dest.Costo, opt => opt.MapFrom(src => src.Costo))
+            .ForPath(dest => dest.Telefono, opt => opt.MapFrom(src => src.Telefono))
+            .ForPath(dest => dest.Descripcion, opt => opt.MapFrom(src => src.Descripcion))
+            .ForPath(dest => dest.Facebook, opt => opt.MapFrom(src => src.Facebook))
+            .ForPath(dest => dest.Instagram, opt => opt.MapFrom(src => src.Instagram))
+            .ForPath(dest => dest.Linkendin, opt => opt.MapFrom(src => src.Linkendin))
+            .ForPath(dest => dest.YouTube, opt => opt.MapFrom(src => src.YouTube))
+            .ForPath(dest => dest.Tipo, opt => opt.MapFrom(src => src.Tipo));
+            
+
 
             //Updates
             CreateMap<AsesorUpdateRequest, Asesor>()       

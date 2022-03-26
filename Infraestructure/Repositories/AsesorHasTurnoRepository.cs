@@ -42,15 +42,22 @@ namespace ApiHelpDents.Infraestructure.Repositories
 
         public async Task<int> Create(AsesorHasTurno ahe){
 
-            var entity = ahe;
-            await _context.AddAsync(entity);
-            var rows = await _context.SaveChangesAsync();
+            var validator = await _context.AsesorHasTurnos.FirstOrDefaultAsync(x => x.AsesorIdAsesor == ahe.AsesorIdAsesor && x.TurnoIdTurno == ahe.TurnoIdTurno);
+            if(validator == null){
+                var entity = ahe;
+                await _context.AddAsync(entity);
+                var rows = await _context.SaveChangesAsync();
 
-            if(rows<=0){
-                throw new Exception("No pudo realizarse el registro");
+                if(rows<=0){
+                    throw new Exception("No pudo realizarse el registro");
+                }
+
+                return entity.Id;
             }
-
-            return entity.Id;
+            else{
+                return 0;
+            }
+            
         }
         public async Task<bool> Delete(int id){
 

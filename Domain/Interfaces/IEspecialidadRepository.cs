@@ -11,6 +11,7 @@ namespace ApiHelpDents.Domain.Interfaces
     {
         Task<IQueryable<Especialidad>> GetAll();
         Task<Especialidad> GetById (int id);
+        Task<Especialidad> GetByName(string name);
         Task<int> Create(Especialidad turno);
         Task<bool> Update(int id, Especialidad especialidad);
         Task<bool> Delete(int id);

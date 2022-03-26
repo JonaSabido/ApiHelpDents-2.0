@@ -57,30 +57,43 @@ namespace ApiHelpDents.Controller{
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] EspecialidadCreateRequest esp){
             
-            var entity = _mapper.Map<EspecialidadCreateRequest, Especialidad>(esp);
-            var id = await _repository.Create(entity);
-            if(id <= 0){
-                return Conflict("No se puede realizar el registro");
-            }
+            var especialidad = await _repository.GetByName(esp.Nombre);
+            if(especialidad == null){
+                var entity = _mapper.Map<EspecialidadCreateRequest, Especialidad>(esp);
+                var id = await _repository.Create(entity);
+                if(id <= 0){
+                    return Conflict("No se puede realizar el registro");
+                }
 
-            return Ok();
-            
+                return Ok();
+            }
+            else{
+                return Conflict("Ya existe una especialidad con este nombre");
+            }
         }
 
         [HttpPut]
         [Route("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody]EspecialidadCreateRequest esp){
 
-            if(id <= 0 || !_repository.Exist(i => i.IdEspecialidad == id))
-                return NotFound("El registro no fué encontrado, veifica tu información...");
+            var Especialidad = await _repository.GetByName(esp.Nombre);
+                if(Especialidad == null || Especialidad.IdEspecialidad == id){
+                    if(id <= 0 || !_repository.Exist(i => i.IdEspecialidad == id))
+                        return NotFound("El registro no fué encontrado, veifica tu información...");
 
-            var entity = _mapper.Map<EspecialidadCreateRequest, Especialidad>(esp);
-            var update = await _repository.Update(id, entity);
+                    var entity = _mapper.Map<EspecialidadCreateRequest, Especialidad>(esp);
+                    var update = await _repository.Update(id, entity);
 
-            if(!update)
-                return Conflict("Ocurrió un fallo al intentar realizar la modificación...");
+                    if(!update)
+                        return Conflict("Ocurrió un fallo al intentar realizar la modificación...");
 
-            return Ok("Se han actualizado los datos correctamente...");
+                    return Ok("Se han actualizado los datos correctamente...");
+                }
+                else{
+                    return Conflict("Ya existe una especialidad con ese nombre");
+                }
+            
+            
 
         }
 

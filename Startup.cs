@@ -49,6 +49,7 @@ namespace ApiHelpDents
             services.AddTransient<IAsesorHasEspecialidadRepository, AsesorHasEspecialidadRepository>();
             services.AddTransient<IAsesorHasComentarioRepository, AsesorHasComentarioRepository>();
             services.AddTransient<IAsesorHasTurnoRepository, AsesorHasTurnoRepository>();
+            services.AddTransient<ISolicitudRepository, SolicitudRepository>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

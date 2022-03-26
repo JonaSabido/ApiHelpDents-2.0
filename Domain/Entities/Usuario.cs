@@ -11,6 +11,7 @@ namespace ApiHelpDents.Domain.Entities
         {
             Asesors = new HashSet<Asesor>();
             Comentarios = new HashSet<Comentario>();
+            Solicituds = new HashSet<Solicitud>();
         }
 
         public int IdUsuario { get; set; }
@@ -24,5 +25,6 @@ namespace ApiHelpDents.Domain.Entities
         public virtual Rol RolIdRolNavigation { get; set; }
         public virtual ICollection<Asesor> Asesors { get; set; }
         public virtual ICollection<Comentario> Comentarios { get; set; }
+        public virtual ICollection<Solicitud> Solicituds { get; set; }
     }
 }

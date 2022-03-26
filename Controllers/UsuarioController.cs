@@ -74,8 +74,9 @@ namespace ApiHelpDents.Controller{
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] UsuarioCreateRequest usuario){
             
-            var entity = _mapper.Map<UsuarioCreateRequest, Usuario>(usuario);
-            if(!_repository.ExistCorreo(usuario.Correo)){
+            var user = await _repository.GetByCorreo(usuario.Correo);
+            if(user == null){
+                var entity = _mapper.Map<UsuarioCreateRequest, Usuario>(usuario);
                 var id = await _repository.Create(entity);
                 if(id <= 0){
                     return Conflict("No se puede realizar el registro");
