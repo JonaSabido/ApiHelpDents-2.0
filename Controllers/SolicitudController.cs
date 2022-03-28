@@ -59,13 +59,13 @@ namespace ApiHelpDents.Controller{
         }
 
         [HttpPut]
-        [Route("{id:int}/{estado}")]
-        public async Task<IActionResult> Update(int id, string estado){
+        [Route("{id:int}")]
+        public async Task<IActionResult> Update(int id, [FromBody] Estado estado){
 
             if(id <= 0 || !_repository.Exist(i => i.IdSolicitud == id))
                 return NotFound("El registro no fué encontrado, veifica tu información...");
 
-            var update = await _repository.Update(id, estado);
+            var update = await _repository.Update(id, estado.Status);
 
             if(!update)
                 return Conflict("Ocurrió un fallo al intentar realizar la modificación...");
