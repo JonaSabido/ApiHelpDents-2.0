@@ -13,6 +13,7 @@ namespace ApiHelpDents.Domain.Interfaces
         Task<Solicitud> GetById (int id);
         Task<int> Create(Solicitud solicitud);
         Task<bool> Update(int id, string estado);
+        Task<bool> Delete(int id);
         bool Exist(Expression<Func<Solicitud, bool>> expression);
     }
 }

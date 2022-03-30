@@ -73,5 +73,20 @@ namespace ApiHelpDents.Controller{
             return Ok("Se han actualizado los datos correctamente...");
 
         }
+        [HttpDelete]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Delete(int id){
+
+            if(id <= 0 || !_repository.Exist(i => i.IdSolicitud == id))
+                return NotFound("El registro no fué encontrado, veifica tu información...");
+
+            var delete = await _repository.Delete(id);
+
+            if(!delete)
+                return Conflict("Ocurrió un fallo al intentar eliminar el registro...");
+
+            return Ok("Se ha eliminado el registro correctamente...");
+
+        }
     }
 }

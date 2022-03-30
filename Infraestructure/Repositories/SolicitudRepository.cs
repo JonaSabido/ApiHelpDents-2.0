@@ -63,6 +63,19 @@ namespace ApiHelpDents.Infraestructure.Repositories
             var rows = await _context.SaveChangesAsync();
             return rows > 0;
         }
+        public async Task<bool> Delete(int id){
+
+            if(id<=0){
+                throw new ArgumentException("Proceso Fallado");
+            }
+
+            var entity = await _context.Solicituds.FirstOrDefaultAsync(x => x.IdSolicitud == id);
+
+            _context.Remove(entity);
+
+            var rows = await _context.SaveChangesAsync();
+            return rows > 0;
+        }
 
         public bool Exist(Expression<Func<Solicitud, bool>> expression)
         {
